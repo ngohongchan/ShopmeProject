@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 	<title>Shopeme Admin Control Panel</title>
 	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
@@ -69,6 +70,23 @@
 		<div th:if="${message != null}" class="alert alert-success text-center">
 			[[${message}]]]
 		</div>
+		
+		<div>
+			<form th:action="@{/users/page/1}">
+				<div class="input-group">
+					<div class="form-inline m-3">
+						<input type="hidden" name="sortField" id="form1" th:value="${sortField}" />
+						<input type="hidden" name="sortDir" id="form1" th:value="${sortDir}" />
+						
+					    <input type="search" name="keyword" th:value="${keyword}" id="form1" class="form-control" placeholder="Search" />
+					    &nbsp;&nbsp;
+					    <button type="submit" class="btn btn-primary">search</button>
+					    &nbsp;&nbsp;
+					    <button type="button" class="btn btn-secondary" onClick="clearFilter()">Clear</button>
+					  </div>
+				</div>
+			</form>
+		</div>
 
 		<table class="table table-responsive-xl table-bordered">
 			<thead class="thead-dark">
@@ -76,7 +94,19 @@
 					<th scope="col">User ID</th>
 					<th scope="col">Photos</th>
 					<th scope="col">E-mail</th>
-					<th scope="col">First Name</th>
+					<th scope="col">
+						<a class="text-white" th:if="${sortField != 'firstName'}" 
+							th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+							First Name
+						</a>
+						
+						<a class="text-white" th:if="${sortField == 'firstName'}" 
+							th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+							First Name
+						</a>
+						
+						<span th:if="${sortField == 'firstName'}" th:class="${sortDir == 'asc' ? 'fa fa-sort-asc' : 'fa fa-sort-desc'}" aria-hidden="true"></span>
+					</th>
 					<th scope="col">Last Name</th>
 					<th scope="col">Roles</th>
 					<th scope="col">Enabled</th>
@@ -120,23 +150,23 @@
 			<span>Not user Found</span>
 		</div>
 		
-		<nav aria-label="Page navigation example">
+		<nav th:if="${totalPages > 1}" aria-label="Page navigation example">
 		  <ul class="pagination justify-content-center">
 		    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-		      <a class="page-link" th:href="@{/users/page/1}">First</a>
+		      <a class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">First</a>
 		    </li>
 		    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-		      <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1}}" tabindex="-1">Previous</a>
+		      <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}" tabindex="-1">Previous</a>
 		    </li>
 		    <li th:class="${currentPage != i ? 'page-item' : 'page-item active'}" th:each="i : ${#numbers.sequence(1, totalPages)}">
-		    	<a class="page-link" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
+		    	<a class="page-link" th:href="@{'/users/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${i}]]</a>
 		    </li>
 		    
 		    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-		      <a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1}}">Next</a>
+		      <a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Next</a>
 		    </li>
 		     <li class="page-item">
-		      <a class="page-link" th:href="@{'/users/page/' + ${totalPages}}">Last</a>
+		      <a class="page-link" th:href="@{'/users/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Last</a>
 		    </li>
 		  </ul>
 		</nav>
@@ -179,6 +209,10 @@
 			$("#confirmModel").modal();
 		});
 	});
+	
+	function clearFilter() {
+		window.location = "[[@{/users}]]";
+	}
 
 
 </script>
