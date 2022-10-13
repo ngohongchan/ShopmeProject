@@ -65,6 +65,12 @@
 		<div class="mb-2">
 			<h1 class="text-capitalize">Manage Users</h1>
 			<a th:href="@{/users/new}">Create New User</a>
+			&nbsp; | &nbsp;
+			<a th:href="@{/users/export/csv}">Export to Csv</a>
+			&nbsp; | &nbsp;
+			<a th:href="@{/users/export/excel}">Export to Excel</a>
+			&nbsp; | &nbsp;
+			<a th:href="@{/users/export/pdf}">Export to Pdf</a>
 		</div>
 
 		<div th:if="${message != null}" class="alert alert-success text-center">
@@ -91,24 +97,12 @@
 		<table class="table table-responsive-xl table-bordered">
 			<thead class="thead-dark">
 				<tr>
-					<th scope="col">User ID</th>
+					<th th:replace="fragments :: column_link('id', 'User ID')" />
 					<th scope="col">Photos</th>
-					<th scope="col">E-mail</th>
-					<th scope="col">
-						<a class="text-white" th:if="${sortField != 'firstName'}" 
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
-							First Name
-						</a>
-						
-						<a class="text-white" th:if="${sortField == 'firstName'}" 
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
-							First Name
-						</a>
-						
-						<span th:if="${sortField == 'firstName'}" th:class="${sortDir == 'asc' ? 'fa fa-sort-asc' : 'fa fa-sort-desc'}" aria-hidden="true"></span>
-					</th>
-					<th scope="col">Last Name</th>
-					<th scope="col">Roles</th>
+					<th th:replace="fragments :: column_link('email', 'Email')" />
+					<th th:replace="fragments :: column_link('firstName', 'First Name')" />
+					<th th:replace="fragments :: column_link('lastName', 'Last Name')" />
+					<th th:replace="fragments :: column_link('roles', 'Roles')" />
 					<th scope="col">Enabled</th>
 					<th scope="col"></th>
 				</tr>
@@ -153,20 +147,20 @@
 		<nav th:if="${totalPages > 1}" aria-label="Page navigation example">
 		  <ul class="pagination justify-content-center">
 		    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-		      <a class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">First</a>
+		      <a th:replace="fragments :: page_link(1, 'First')" />
 		    </li>
 		    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-		      <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}" tabindex="-1">Previous</a>
+		      <a th:replace="fragments :: page_link(${currentPage - 1}, 'Previous')" />
 		    </li>
 		    <li th:class="${currentPage != i ? 'page-item' : 'page-item active'}" th:each="i : ${#numbers.sequence(1, totalPages)}">
-		    	<a class="page-link" th:href="@{'/users/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${i}]]</a>
+		    	<a th:replace="fragments :: page_link(${i}, ${i})" />
 		    </li>
 		    
 		    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-		      <a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Next</a>
+		     <a th:replace="fragments :: page_link(${currentPage + 1}, 'Next')" />
 		    </li>
 		     <li class="page-item">
-		      <a class="page-link" th:href="@{'/users/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Last</a>
+		     <a th:replace="fragments :: page_link(${totalPages}, 'Last')" />
 		    </li>
 		  </ul>
 		</nav>
