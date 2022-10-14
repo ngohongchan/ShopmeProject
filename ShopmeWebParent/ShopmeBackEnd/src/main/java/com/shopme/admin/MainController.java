@@ -33,4 +33,10 @@ public class MainController implements ErrorController {
 	    }
 	    return "error";
 	}
+	
+	@GetMapping("/login")
+	public String viewLoginPage() {
+		return "login";
+	}
+	
 }
