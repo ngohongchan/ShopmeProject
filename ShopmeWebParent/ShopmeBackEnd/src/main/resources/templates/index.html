@@ -8,6 +8,13 @@
 			<h1 class="text-capitalize">Shopme Control Panel</h1>
 		</div>
 		
+		<div>
+			<h2>Welcome</h2>
+			<a th:href="@{/account}" sec:authentication="principal.fullname"></a>
+			
+			<span sec:authentication="principal.authorities"></span>
+		</div>
+		
 		<div th:replace="fragments :: footer"></div>
 	</div>
 	

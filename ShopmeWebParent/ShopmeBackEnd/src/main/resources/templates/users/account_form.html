@@ -103,6 +103,11 @@
 			window.location = "[[@{/users}]]";
 		});
 		
+		$("#LogoutLink").on("click", function(e) {
+				e.preventDefault();
+				document.LogoutForm.submit();
+			});
+		
 		$("#fileImage").change(function() {
 			fileSize = this.files[0].size;
 			
