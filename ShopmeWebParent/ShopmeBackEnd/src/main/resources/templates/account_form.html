@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments :: page_head('[[${pageTitle}]]')"></head>
+<head th:replace="fragments :: page_head('Your Account Details')"></head>
 
 <body>
 	<div class="container-fluid">
 		<div th:replace="navigation :: menu"></div>
+		<div class="mb-2 text-center">
+			<h1 class="text-capitalize">Your Account Details</h1>
+		</div>
 		
-		<div class="mb-2">
-			<h1 class="text-capitalize">Manage Users | [[${pageTitle}]]</h1>
+		<div th:if="${message != null}" class="alert alert-success text-center">
+			[[${message}]]]
 		</div>
 
 
-		<form th:action="@{/users/save}" th:object="${user}" method="post" style="max-width: 700px; margin: 0 auto" 
-			onSubmit="return checkEmailUnique(this)" enctype="multipart/form-data">
+		<form th:action="@{/account/update}" th:object="${user}" method="post" style="max-width: 700px; margin: 0 auto" 
+			enctype="multipart/form-data">
 			<input type="hidden" th:field="*{id}" />
 			<div class="border border-secondary rounded p-3">
 				<div class="form-group">
 					<label for="email">Email:</label>
 					<input th:field="*{email}" type="text" class="form-control" id="email" placeholder="Enter email"
-						name="email" required>
+						name="email" readonly="readonly">
 					<div class="valid-feedback">Valid.</div>
 					<div class="invalid-feedback">Please fill out this field.</div>
 				</div>
@@ -33,21 +36,23 @@
 				</div>
 				<div class="form-group">
 					<label for="pwd">Password:</label>
-					<input th:if="${user.id == null}" th:field="*{password}" type="password" class="form-control" placeholder="Enter password"
-						name="pswd" minlength="8" maxlength="20" required>
-					<input th:if="${user.id != null}" th:field="*{password}" type="password" class="form-control" placeholder="Enter password"
+					<input th:field="*{password}" type="password" id="password" class="form-control" placeholder="Leave blank if you don't wnat to change password"
 						name="pswd" minlength="8" maxlength="20">
 					<div class="valid-feedback">Valid.</div>
 					<div class="invalid-feedback">Please fill out this field.</div>
 				</div>
-				<div class="form-group form-check">
-					<th:block th:each="role : ${listRoles}">
-						<label class="form-check-label">
-							<input type="checkbox" th:field="*{roles}" th:text="${role.name}" th:value="${role.id}"
-								class="form-check-input" />
-							- <small>[[${role.description}]]</small>
-						</label></br>
-					</th:block>
+				
+				<div class="form-group">
+					<label for="pwd">Confirm Password:</label>
+					<input id="confirmPassword" on type="password" class="form-control"name="pswd" minlength="8" maxlength="20"  
+						oninput="checkPasswordMath(document.getElementById('confirmPassword'))" />
+					<div class="valid-feedback">Valid.</div>
+					<div class="invalid-feedback">Please fill out this field.</div>
+				</div>
+				
+				<div class="form-group">
+					<label>Assigned Roles: </label>
+					<span><b>[[${user.roles}]]</b></span>
 
 				</div>
 				<div class="form-group form-check">
@@ -109,7 +114,26 @@
 				showImageThumbnail(this);	
 			}
 		});
+		
+		customizeDropDownMenu()
 	});
+	
+	function customizeDropDownMenu() {
+		$(".navbar .dropdown").hover(
+			function() {
+				$(this).find('.dropdown-menu').first().stop(true, true).delay(250).slideDown();
+			},
+			function() {
+				$(this).find('.dropdown-menu').first().stop(true, true).delay(250).slideUp();
+			},
+			);
+			
+		$(".dropdown > a").click(function() {
+			location.href = this.href;
+		});
+	}
+	
+	
 	
 	function showImageThumbnail(fileInput) {
 		var file = fileInput.files[0];
@@ -121,33 +145,14 @@
 		reader.readAsDataURL(file);
 	}
 	
-	function checkEmailUnique(form) {
-		url = "[[@{/users/check_email}]]";
-		userEmail = $("#email").val();
-		userId = $("#id").val();
-		csrfValue = $("input[name = '_csrf']").val();
-		var params = {id: userId, email: userEmail, _csrf: csrfValue};
-		
-		$.post(url, params, function(response) {
-			if(response == "OK") {
-				form.submit();
-			} else if (response == "Duplicated") {
-				showModalDialog("Warning", "There is another user having the email " + userEmail);
-			} else {
-				showModalDialog("error", "Unknow response from server");
-			}
-		}).fail(function(){
-			showModalDialog("error", "Could not connect to server");
-		});
-		
-		return false;
+	function checkPasswordMath(confirmPassword) {
+		if(confirmPassword.value != $("#password").val()) {
+			confirmPassword.setCustomValidity("Password is not match");
+		} else {
+			confirmPassword.setCustomValidity("");
+		}
 	}
 	
-	function showModalDialog(title, message) {
-		$("#modalTitle").text(title);
-		$("#modalBody").text(message);
-		$("#modalDialog").modal();
-	}
 </script>
 
 </html>
