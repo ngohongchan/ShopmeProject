@@ -30,6 +30,10 @@ public class UserService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	public User getByEmail(String email) {
+		return userRepository.getUserByEMail(email);
+	}
 
 	public List<User> listAll() {
 		return (List<User>) userRepository.findAll();
@@ -68,6 +72,25 @@ public class UserService {
 		}
 		
 		return userRepository.save(user);
+	}
+	
+	public User updateAccount(User userInForm) {
+		User userInDB = userRepository.findById(userInForm.getId()).get();
+		
+		if(!userInForm.getPassword().isEmpty()) {
+			userInDB.setPassword(userInForm.getPassword());
+			encodePassword(userInDB);
+		}
+		
+		if(userInForm.getPhotos() != null) {
+			userInDB.setPhotos(userInForm.getPhotos());
+		}
+		
+		userInDB.setFirstName(userInForm.getFirstName());
+		userInDB.setLastName(userInForm.getLastName());
+		userInDB.setRoles(userInForm.getRoles());
+		
+		return userRepository.save(userInForm);
 	}
 	
 	private void encodePassword(User user) {
