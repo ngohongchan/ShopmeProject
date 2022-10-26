@@ -7,9 +7,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileUploadUtil {
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadUtil.class);
+	
 	public static void saveFile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {
 		Path uploadPath = Paths.get(uploadDir);
 		if(!Files.exists(uploadPath)) {
@@ -33,11 +37,13 @@ public class FileUploadUtil {
 					try {
 						Files.delete(file);
 					} catch (Exception e) {
+						LOGGER.error("Could not delete file: " + dir);
 						System.out.println("Could not delete file: " + file);
 					}
 				}
 			});
 		} catch (Exception e) {
+			LOGGER.error("Could not list directory: " + dirPath);
 			System.out.println("Could not list directory: " + dirPath);
 		}
 	}
