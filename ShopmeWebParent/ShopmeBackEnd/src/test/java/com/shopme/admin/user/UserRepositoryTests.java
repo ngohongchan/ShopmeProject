@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 import com.shopme.common.entity.Role;
@@ -42,9 +45,9 @@ public class UserRepositoryTests {
 	
 	@Test
 	public void testCreateNewUserWithTwoRole() {
-		User user = new User("ronaldo1@gmail.com", "ronaldo123", "ronaldo", "cr7");
-		Role roleEditor = new Role(3);
-		Role roleAssistant = new Role(5);
+		User user = new User("chan123456@gmail.com", "$2a$10$hcHD2s1x28Yq/uiu5tSuguITqfwBToz9NZLoHN3.Lp0PYH8yGVuFy", "ronaldo", "cr7");
+		Role roleEditor = new Role(1);
+		Role roleAssistant = new Role(2);
 		
 		user.addRole(roleEditor); 
 		user.addRole(roleAssistant);
@@ -53,6 +56,7 @@ public class UserRepositoryTests {
 		
 		assertThat(savedUser.getId()).isGreaterThan(0);
 	}
+
 	
 	@Test
 	public void testListAllUsers() {
