@@ -64,7 +64,7 @@
 						<a th:if="${category.enabled == false}" class="btn btn-warning">False</a>
 					</td>
 					<td>
-						<a class="btn btn-primary">Edit</a>
+						<a class="btn btn-primary" th:href="@{'/categories/edit/' + ${category.id}}">Edit</a>
 						<a class="btn btn-danger link-delete">Delete</a>
 					</td>
 				</tr>
