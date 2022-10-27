@@ -6,14 +6,14 @@
 	<div class="container-fluid">
 		<div th:replace="navigation :: menu"></div>
 		<div class="mb-2">
-			<h1 class="text-capitalize">Manage Users</h1>
-			<a th:href="@{/users/new}">Create New User</a>
+			<h1 class="text-capitalize">Manage Categories</h1>
+			<a th:href="@{/categories/new}">Create New Category</a>
 			&nbsp; | &nbsp;
-			<a th:href="@{/users/export/csv}">Export to Csv</a>
+			<a th:href="@{/categories/export/csv}">Export to Csv</a>
 			&nbsp; | &nbsp;
-			<a th:href="@{/users/export/excel}">Export to Excel</a>
+			<a th:href="@{/categories/export/excel}">Export to Excel</a>
 			&nbsp; | &nbsp;
-			<a th:href="@{/users/export/pdf}">Export to Pdf</a>
+			<a th:href="@{/categories/export/pdf}">Export to Pdf</a>
 		</div>
 
 		<div th:if="${message != null}" class="alert alert-success text-center">
@@ -21,7 +21,7 @@
 		</div>
 		
 		<div>
-			<form th:action="@{/users/page/1}">
+			<form th:action="@{/categories/page/1}">
 				<div class="input-group">
 					<div class="form-inline m-3">
 						<input type="hidden" name="sortField" id="form1" th:value="${sortField}" />
