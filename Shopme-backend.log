@@ -1,0 +1,5 @@
+2022-10-27 11:46:21.806  INFO 4508 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2022-10-27 11:46:21.836  INFO 4508 --- [Thread-22] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-10-27 11:46:21.847  INFO 4508 --- [Thread-22] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-27 11:46:21.848  INFO 4508 --- [Thread-22] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown initiated...
+2022-10-27 11:46:21.856  INFO 4508 --- [Thread-22] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown completed.
