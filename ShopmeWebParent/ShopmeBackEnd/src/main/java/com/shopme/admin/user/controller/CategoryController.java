@@ -62,20 +62,23 @@ public class CategoryController {
 
     @GetMapping("/categories/edit/{id}")
     public String updateCategory(@PathVariable("id") Integer id,
-                                 Model model, RedirectAttributes redirectAttributes)
-            throws CategoryNotFoundException {
+                                 Model model, RedirectAttributes redirectAttributes) {
         try {
             model.addAttribute("pageTitle", "Edit Category (Id: " + id + ")");
 
             Category category = categoryService.get(id);
             model.addAttribute("category", category);
+
+            List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+            model.addAttribute("listCategories", listCategories);
+
             redirectAttributes.addFlashAttribute("message","The category ID " + id + " has been deleted successfully");
 
             return "categories/category_form";
 
         } catch (CategoryNotFoundException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
-            return "categories/categories";
+            return "redirect:/categories";
         }
 
     }

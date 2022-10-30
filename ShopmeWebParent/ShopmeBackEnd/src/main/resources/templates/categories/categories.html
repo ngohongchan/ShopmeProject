@@ -53,7 +53,9 @@
 					<td>[[${category.id}]]</td>
 					<td>
 						<div class ="text-center">
-							default
+							<span th:if="${category.image == null}">default</span>
+
+							<img th:if="${category.image != null}" width="70px" th:src="@{${category.imagePath}}" />
 						</div>
 					</td>
 					<td>[[${category.name}]]</td>
