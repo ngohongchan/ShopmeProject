@@ -20,7 +20,44 @@ public class CategoryService {
 	private CategoryRepository categoryRepository;
 	
 	public List<Category> listsAll() {
-		return (List<Category>) categoryRepository.findAll();
+		List<Category> rootCategories = categoryRepository.findRootCategory();
+		return listHierarchicalCategory(rootCategories);
+	}
+
+	private List<Category> listHierarchicalCategory(List<Category> rootCategories) {
+		List<Category> hierarchicalCategories = new ArrayList<>();
+
+		for(Category rooCategory: rootCategories) {
+			hierarchicalCategories.add(Category.copyFull(rooCategory));
+
+			Set<Category> children = rooCategory.getChildren();
+
+			for(Category subCategory: children) {
+				String name = "--" + subCategory.getName();
+				hierarchicalCategories.add(Category.copyFull(Category.copyFull(subCategory), name));
+
+				listSubHierarchicalCategories(hierarchicalCategories, subCategory, 1);
+			}
+		}
+
+		return hierarchicalCategories;
+	}
+
+	private void listSubHierarchicalCategories(List<Category> hierarchicalCategories, Category parent, int subLevel) {
+		Set<Category> children = parent.getChildren();
+		int newSubLevel = subLevel + 1;
+
+		for(Category subCategory : children) {
+			String name = "";
+			for(int i = 0; i < newSubLevel; i++) {
+				name += "--";
+			}
+
+			name += subCategory.getName();
+			hierarchicalCategories.add(Category.copyFull(subCategory, name));
+
+			listSubHierarchicalCategories(hierarchicalCategories, subCategory, newSubLevel);
+		}
 	}
 
 	public Category save(Category category) {

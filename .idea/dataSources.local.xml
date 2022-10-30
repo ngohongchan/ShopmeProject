@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="IU-211.7628.21" />
+  <component name="dataSourceStorageLocal" created-in="IU-211.7628.21">
+    <data-source name="ShopmeBackEnd/Hibernate" uuid="b4f9295e-fdf8-4992-b1ed-ea771fcc2254">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" exact-version="0" />
+      <user-name>root</user-name>
+      <schema-mapping />
+    </data-source>
+  </component>
 </project>
