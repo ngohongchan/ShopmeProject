@@ -1,9 +1,9 @@
 package com.shopme.admin.user;
 
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.shopme.common.entity.Category;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +14,6 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
     public List<Category> findRootCategory();
 
     public Category findByName(String name);
+
+    public Category findByAlias(String alias);
 }

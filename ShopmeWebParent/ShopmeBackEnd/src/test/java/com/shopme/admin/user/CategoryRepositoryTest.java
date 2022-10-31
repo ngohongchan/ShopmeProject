@@ -2,7 +2,6 @@ package com.shopme.admin.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
 import com.shopme.common.entity.Category;
@@ -22,6 +22,9 @@ public class CategoryRepositoryTest {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private TestEntityManager entityManager;
 	
 	@Test
 	public void testCreateRootCategory() {
@@ -98,10 +101,19 @@ public class CategoryRepositoryTest {
 
 	@Test
 	public void testFindByName() {
-		String name = "Computers";
+		String name = "electronic";
 		Category category = categoryRepository.findByName(name);
 
 		assertThat(category).isNotNull();
 		assertThat(category.getName()).isEqualTo(name);
+	}
+
+	@Test
+	public void testFindAlias() {
+		String alias = "electronic";
+		Category category = categoryRepository.findByAlias(alias);
+
+		assertThat(category).isNotNull();
+		assertThat(category.getAlias()).isEqualTo(alias);
 	}
 }
