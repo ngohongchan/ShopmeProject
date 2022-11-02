@@ -121,6 +121,21 @@ public class CategoryService {
 		if(isCreatingNew) {
 			if(categoryByName != null) {
 				return "DuplicateName";
+			} else {
+				Category categoryByAlias = categoryRepository.findByAlias(alias);
+
+				if(categoryByAlias != null) {
+					return "DuplicateAlias";
+				}
+			}
+		} else {
+			if(categoryByName != null && !categoryByName.getId().equals(id)) {
+				return "DuplicateName";
+			}
+
+			Category categoryByAlias = categoryRepository.findByAlias(alias);
+			if(categoryByAlias != null && !categoryByAlias.getId().equals(id)) {
+				return "DuplicateAlias";
 			}
 		}
 
