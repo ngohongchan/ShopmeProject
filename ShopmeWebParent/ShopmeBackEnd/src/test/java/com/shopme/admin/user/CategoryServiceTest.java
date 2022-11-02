@@ -29,11 +29,75 @@ public class CategoryServiceTest {
         Category category = new Category(id, name, alias);
 
         Mockito.when(repo.findByName(name)).thenReturn(category);
+        Mockito.when(repo.findByAlias(alias)).thenReturn(null);
 
         String result = service.checkUnique(id, name, alias);
 
         assertThat(result).isEqualTo("DuplicateName");
 
+    }
+
+    @Test
+    public void testCheckUniqueInNewModeReturnDuplicateAlias() {
+        Integer id = null;
+        String name = "NameAbc";
+        String alias = "Computer";
+
+        Category category = new Category(id, name, alias);
+
+        Mockito.when(repo.findByName(name)).thenReturn(null);
+        Mockito.when(repo.findByAlias(alias)).thenReturn(category);
+
+        String result = service.checkUnique(id, name, alias);
+
+        assertThat(result).isEqualTo("DuplicateAlias");
+
+    }
+
+    @Test
+    public void testCheckUniqueInNewModeReturnOk() {
+        Integer id = null;
+        String name = "NameAbc";
+        String alias = "Computer";
+
+        Mockito.when(repo.findByName(name)).thenReturn(null);
+        Mockito.when(repo.findByAlias(alias)).thenReturn(null);
+
+        String result = service.checkUnique(id, name, alias);
+
+        assertThat(result).isEqualTo("OK");
+    }
+
+    @Test
+    public void testCheckUniqueInEditModeReturnDuplicateName() {
+        Integer id = 1;
+        String name = "Computers";
+        String alias = "abc";
+
+        Category category = new Category(2, name, alias);
+
+        Mockito.when(repo.findByName(name)).thenReturn(category);
+        Mockito.when(repo.findByAlias(alias)).thenReturn(null);
+
+        String result = service.checkUnique(id, name, alias);
+
+        assertThat(result).isEqualTo("DuplicateName");
+    }
+
+    @Test
+    public void testCheckUniqueInEditModeReturnDuplicateAlias() {
+        Integer id = 1;
+        String name = "NameAbc";
+        String alias = "Computer";
+
+        Category category = new Category(2, name, alias);
+
+        Mockito.when(repo.findByName(name)).thenReturn(null);
+        Mockito.when(repo.findByAlias(alias)).thenReturn(category);
+
+        String result = service.checkUnique(id, name, alias);
+
+        assertThat(result).isEqualTo("DuplicateAlias");
     }
 
 }

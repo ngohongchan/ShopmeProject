@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.user.CategoryNotFoundException;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +47,7 @@ public class CategoryController {
 
     @PostMapping("/categories/save")
     public String saveCategory(Category category, RedirectAttributes redirectAttributes,
-                               @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
+                               @RequestParam("fileImage") @NotNull MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         category.setImage(fileName);
 
