@@ -17,19 +17,19 @@
 
 
   <form th:action="@{/categories/save}" th:object="${category}" method="post" style="max-width: 700px; margin: 0 auto"
-        enctype="multipart/form-data">
-    <input type="hidden" th:field="*{id}" />
+        enctype="multipart/form-data" onsubmit="return checkUnique(this)">
+    <input type="hidden" th:field="*{id}" id="id" />
     <div class="border border-secondary rounded p-3">
       <div class="form-group">
         <label for="email">Category</label>
-        <input th:field="*{name}" type="text" class="form-control" id="email" placeholder="Category Name"
+        <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Category Name"
                name="email" minlength="3" maxlength="128" required>
         <div class="valid-feedback">Valid.</div>
         <div class="invalid-feedback">Please fill out this field.</div>
       </div>
       <div class="form-group">
         <label>Alias:</label>
-        <input th:field="*{alias}" type="text" class="form-control" placeholder="alias" minlength="2" maxlength="45">
+        <input th:field="*{alias}" type="text" class="form-control" placeholder="alias" id="alias" minlength="2" maxlength="45">
       </div>
       <div class="form-group">
         <label>Parent Category:</label>
@@ -84,6 +84,49 @@
 </div>
 </body>
 <script type="text/javascript">
+  function checkUnique(form) {
+    catId = $("#id").val();
+    catName = $("#name").val();
+    catAlias = $("#alias").val();
+    csrfValue = $("input[name = '_csrf']").val();
+    url = "[[@{/categories/check_unique}]]";
+
+    params = { id: catId, name: catName, alias: catAlias, _csrf: csrfValue };
+    
+    $.post(url, params, function (response) {
+      if(response === "OK") {
+        form.submit();
+      } else if(response === "DuplicateName") {
+        showWarningModel("There is another category having same name " + catName);
+      } else if (response === "DuplicateAlias") {
+        showWarningModel("There is another category having same alias " + catAlias);
+      } else {
+        showErrorModel("Unknown response from server " + "status : " + response.status);
+      }
+    }).fail(function () {
+      showErrorModel("Could not connect to the server " + "status : " + response.status);
+    });
+
+
+    return false;
+  }
+
+
+  function showModalDialog(title, message) {
+    $("#modalTitle").text(title);
+    $("#modalBody").text(message);
+    $("#modalDialog").modal();
+  }
+
+  function showErrorModel(message) {
+    showModalDialog("Error", message);
+  }
+
+  function showWarningModel(message) {
+    showModalDialog("Warning", message);
+  }
+
+
   moduleUrl = "[[@{categories}]]";
 
   $(document).ready(function () {
@@ -113,6 +156,8 @@
 
     reader.readAsDataURL(file);
   }
+
+
 
 </script>
 
