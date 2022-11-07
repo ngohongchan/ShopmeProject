@@ -40,10 +40,33 @@
 		<table class="table table-responsive-xl table-bordered">
 			<thead class="thead-dark">
 				<tr>
-					<th th:replace="fragments :: column_link('id', 'ID')" />
-					<th th:replace="fragments :: column_link('category-image', 'Category Image')" />
-					<th th:replace="fragments :: column_link('category-name', 'Category Name')" />
-					<th th:replace="fragments :: column_link('alias', 'Alias')" />
+					<th scope="col">
+						<a class="text-white"
+						   th:href="@{'/categories?sortDir=asc'}">
+							ID
+						</a>
+					</th>
+
+					<th scope="col">
+						<a class="text-white"
+						   th:href="@{'/categories?sortDir=asc'}">
+							Category Image
+						</a>
+					</th>
+
+					<th scope="col">
+						<a class="text-white"
+						   th:href="@{'/categories?sortDir=asc'}">
+							Category Name
+						</a>
+					</th>
+
+					<th scope="col">
+						<a class="text-white"
+						   th:href="@{'/categories?sortDir=asc'}">
+							Category ALias
+						</a>
+					</th>
 					<th scope="col">Enabled</th>
 					<th scope="col"></th>
 				</tr>
