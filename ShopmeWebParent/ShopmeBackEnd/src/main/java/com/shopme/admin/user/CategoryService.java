@@ -17,8 +17,19 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	public List<Category> listsAll() {
-		List<Category> rootCategories = categoryRepository.findRootCategory(Sort.by("name").ascending());
+	public List<Category> listsAll(String sortDir) {
+
+		Sort sort = Sort.by("name");
+
+		if(sortDir == null || sortDir.isEmpty()) {
+			sort = sort.ascending();
+		}else if(sortDir.equals("asc")) {
+			sort = sort.ascending();
+		} else if(sortDir.equals("desc")) {
+			sort = sort.descending();
+		}
+
+		List<Category> rootCategories = categoryRepository.findRootCategory(sort);
 		return listHierarchicalCategory(rootCategories);
 	}
 
