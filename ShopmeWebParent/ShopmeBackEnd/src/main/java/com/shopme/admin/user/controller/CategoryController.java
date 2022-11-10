@@ -29,8 +29,16 @@ public class CategoryController {
 
     @GetMapping("/categories")
     private String listAll(@Param("sortDir") String sortDir, Model model) {
+
+        if(sortDir == null || sortDir.isEmpty()) {
+            sortDir = "asc";
+        }
+
         List<Category> listCategories = categoryService.listsAll(sortDir);
         model.addAttribute("listCategories", listCategories);
+
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+        model.addAttribute("reverseSortDir", reverseSortDir);
 
         return "categories/categories";
     }
@@ -83,6 +91,20 @@ public class CategoryController {
             return "redirect:/categories";
         }
 
+    }
+
+    @GetMapping("/categories/{id}/enabled/{status}")
+    public String updateCategoryEnabledStatus(
+            @PathVariable("id") Integer id, @PathVariable("status") boolean enabled,
+                RedirectAttributes redirectAttributes) {
+        categoryService.updateCategoryEnabled(id, enabled);
+
+        String status = enabled ? "enabled" : "disabled";
+        String message = "The category ID " + id + " has been " + status;
+
+        redirectAttributes.addFlashAttribute("message", message);
+
+        return "redirect:/categories";
     }
 
 }
