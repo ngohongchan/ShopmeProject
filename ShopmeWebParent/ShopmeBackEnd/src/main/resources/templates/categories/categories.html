@@ -56,9 +56,11 @@
 
 					<th scope="col">
 						<a class="text-white"
-						   th:href="@{'/categories?sortDir=asc'}">
+						   th:href="@{'/categories?sortDir=' + ${reverseSortDir}}">
 							Category Name
 						</a>
+
+						<span th:class="${reverseSortDir == 'asc' ? 'fa fa-sort-asc' : 'fa fa-sort-desc'}" aria-hidden="true"></span>
 					</th>
 
 					<th scope="col">
@@ -84,9 +86,11 @@
 					<td>[[${category.name}]]</td>
 					<td>[[${category.alias}]]</td>
 					<td>
-						<a th:if="${category.enabled == true}" class="btn btn-primary">True</a>
+						<a th:if="${category.enabled == true}" th:href="@{'/categories/' + ${category.id} + '/enabled/true'}"
+						   class="btn btn-primary">[[${category.enabled}]]</a>
 						
-						<a th:if="${category.enabled == false}" class="btn btn-warning">False</a>
+						<a  th:if="${category.enabled == false}" th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
+							class="btn btn-warning">False</a>
 					</td>
 					<td>
 						<a class="btn btn-primary" th:href="@{'/categories/edit/' + ${category.id}}">Edit</a>
