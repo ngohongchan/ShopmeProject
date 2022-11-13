@@ -23,6 +23,9 @@ public class Category {
 	private String image;
 	
 	private boolean enabled;
+
+	@Transient
+	private boolean hasChildren;
 	
 	@OneToOne()
 	@JoinColumn(name = "parent_id")
@@ -69,9 +72,12 @@ public class Category {
 		copyCategory.setImage(category.getImage());
 		copyCategory.setAlias(category.getAlias());
 		copyCategory.setEnabled(category.isEnabled());
+		copyCategory.setHasChildren(category.getChildren().size() > 0);
 
 		return copyCategory;
 	}
+
+
 
 	public static Category copyFull(Category category, String name) {
 		Category copyCategory = Category.copyFull(category);
@@ -151,5 +157,13 @@ public class Category {
 		if(id == null || image == null) return "/images/user.jpg";
 		return "/category-images/" + this.id + "/" + this.image;
 	}
-	
+
+	public boolean isHasChildren() {
+		return hasChildren;
+	}
+
+	public void setHasChildren(boolean hasChildren) {
+		this.hasChildren = hasChildren;
+	}
+
 }

@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import com.shopme.admin.FileUploadUtil;
-import com.shopme.admin.user.CategoryNotFoundException;
+import com.shopme.admin.category.CategoryPageInfo;
+import com.shopme.admin.user.exceprion.CategoryNotFoundException;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.shopme.admin.user.CategoryService;
+import com.shopme.admin.user.service.CategoryService;
 import com.shopme.common.entity.Category;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,16 +29,29 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/categories")
-    private String listAll(@Param("sortDir") String sortDir, Model model) {
+    private String listFirstPage(@Param("sortDir") String sortDir, Model model) {
+        return listByPage(1, sortDir, model);
 
+    }
+
+    @GetMapping("/categories/page/{pageNum}")
+    public String listByPage(@PathVariable(name = "pageNum") int pageNum,
+                             @Param("sortDir") String sortDir, Model model) {
         if(sortDir == null || sortDir.isEmpty()) {
             sortDir = "asc";
         }
 
-        List<Category> listCategories = categoryService.listsAll(sortDir);
-        model.addAttribute("listCategories", listCategories);
+        CategoryPageInfo categoryPageInfo = new CategoryPageInfo();
+        List<Category> listCategories = categoryService.listsByPage(categoryPageInfo, pageNum, sortDir);
 
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+        model.addAttribute("listCategories", listCategories);
+        model.addAttribute("totalPages", categoryPageInfo.getTotalPages());
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalItems", categoryPageInfo.getTotalElements());
+        model.addAttribute("sortField", "name");
+        model.addAttribute("sortField", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
 
         return "categories/categories";
@@ -103,6 +117,23 @@ public class CategoryController {
         String message = "The category ID " + id + " has been " + status;
 
         redirectAttributes.addFlashAttribute("message", message);
+
+        return "redirect:/categories";
+    }
+
+    @GetMapping("/categories/delete/{id}")
+    public String deleteCategory(@PathVariable("id") Integer id, Model model,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            categoryService.delete(id);
+            String categoryDir = "../category-images/" + id;
+            FileUploadUtil.removeDir(categoryDir);
+
+            String message = "The category ID: " + id + " has been deleted successfully";
+            redirectAttributes.addFlashAttribute("message", message);
+        } catch (CategoryNotFoundException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        }
 
         return "redirect:/categories";
     }

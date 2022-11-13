@@ -1,10 +1,16 @@
-package com.shopme.admin.user;
+package com.shopme.admin.user.service;
 
 import java.util.*;
 
 import javax.transaction.Transactional;
 
+import com.shopme.admin.category.CategoryPageInfo;
+import com.shopme.admin.user.exceprion.CategoryNotFoundException;
+import com.shopme.admin.user.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +19,12 @@ import com.shopme.common.entity.Category;
 @Service
 @Transactional
 public class CategoryService {
+	private static int ROOT_CATEGORIES_PER_PAGE = 4;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	public List<Category> listsAll(String sortDir) {
+	public List<Category> listsByPage(CategoryPageInfo pageInfo, int pageNum, String sortDir) {
 
 		Sort sort = Sort.by("name");
 
@@ -27,7 +34,14 @@ public class CategoryService {
 			sort = sort.descending();
 		}
 
-		List<Category> rootCategories = categoryRepository.findRootCategory(sort);
+		Pageable pageable = PageRequest.of(pageNum - 1, ROOT_CATEGORIES_PER_PAGE, sort);
+
+		Page<Category> pageCategories = categoryRepository.findRootCategories(pageable);
+		List<Category> rootCategories = pageCategories.getContent();
+
+		pageInfo.setTotalElements(pageCategories.getTotalElements());
+		pageInfo.setTotalPages(pageCategories.getTotalPages());
+
 		return listHierarchicalCategory(rootCategories, sortDir);
 	}
 
@@ -74,7 +88,7 @@ public class CategoryService {
 	public List<Category> listCategoriesUsedInForm() {
 		List<Category> categoriesUsedInForm = new ArrayList<>();
 
-		List<Category> categoriesInDB = (List<Category>) categoryRepository.findRootCategory(Sort.by("name").ascending());
+		List<Category> categoriesInDB = (List<Category>) categoryRepository.findRootCategories(Sort.by("name").ascending());
 
 		for(Category category : categoriesInDB) {
 			if(category.getParent() == null) {
@@ -174,5 +188,15 @@ public class CategoryService {
 
 	public void updateCategoryEnabled(Integer id, boolean enabled) {
 		categoryRepository.updateEnabledStatus(id, enabled);
+	}
+
+	public void delete(Integer id) throws CategoryNotFoundException {
+		Long countById = categoryRepository.countById(id);
+
+		if(countById == null || countById == 0) {
+			throw new CategoryNotFoundException("Could not find any category with ID " + id);
+		}
+
+		categoryRepository.deleteById(id);
 	}
 }

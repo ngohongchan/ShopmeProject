@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.security.ShopmeUserDetails;
-import com.shopme.admin.user.UserService;
+import com.shopme.admin.user.service.UserService;
 import com.shopme.common.entity.User;
 
 @Controller

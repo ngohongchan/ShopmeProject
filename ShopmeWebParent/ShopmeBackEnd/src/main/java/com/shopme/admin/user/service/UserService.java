@@ -1,16 +1,18 @@
-package com.shopme.admin.user;
+package com.shopme.admin.user.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
+import com.shopme.admin.user.exceprion.UserNotFoundException;
+import com.shopme.admin.user.repository.RoleRepository;
+import com.shopme.admin.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -90,7 +92,7 @@ public class UserService {
 		userInDB.setLastName(userInForm.getLastName());
 		userInDB.setRoles(userInForm.getRoles());
 		
-		return userRepository.save(userInForm);
+		return userRepository.save(userInDB);
 	}
 	
 	private void encodePassword(User user) {
