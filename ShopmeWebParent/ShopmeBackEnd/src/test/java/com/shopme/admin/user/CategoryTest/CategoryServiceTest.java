@@ -1,5 +1,7 @@
-package com.shopme.admin.user;
+package com.shopme.admin.user.CategoryTest;
 
+import com.shopme.admin.user.repository.CategoryRepository;
+import com.shopme.admin.user.service.CategoryService;
 import com.shopme.common.entity.Category;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

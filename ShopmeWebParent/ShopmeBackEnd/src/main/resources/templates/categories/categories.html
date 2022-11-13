@@ -56,7 +56,7 @@
 
 					<th scope="col">
 						<a class="text-white"
-						   th:href="@{'/categories?sortDir=' + ${reverseSortDir}}">
+						   th:href="@{'/categories/page/' + ${pageNum} '?sortDir=' + ${reverseSortDir}}">
 							Category Name
 						</a>
 
@@ -86,29 +86,73 @@
 					<td>[[${category.name}]]</td>
 					<td>[[${category.alias}]]</td>
 					<td>
-						<a th:if="${category.enabled == true}" th:href="@{'/categories/' + ${category.id} + '/enabled/true'}"
-						   class="btn btn-primary">[[${category.enabled}]]</a>
+						<a th:if="${category.enabled == true}" th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
+						   class="btn btn-primary">True</a>
 						
-						<a  th:if="${category.enabled == false}" th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
+						<a  th:if="${category.enabled == false}" th:href="@{'/categories/' + ${category.id} + '/enabled/true'}"
 							class="btn btn-warning">False</a>
 					</td>
 					<td>
 						<a class="btn btn-primary" th:href="@{'/categories/edit/' + ${category.id}}">Edit</a>
-						<a class="btn btn-danger link-delete">Delete</a>
+
+						<th:block th:if="${category.hasChildren == false}">
+							<a class="btn btn-danger link-delete" th:href="@{'/categories/delete/' + ${category.id}}"
+							   th:entityId="${category.id}">Delete</a>
+						</th:block>
 					</td>
 				</tr>
 
 			</tbody>
 		</table>
+
+		<div class="modal" tabindex="-1" role="dialog" id="confirmModel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Modal title</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p id="confirmText"></p>
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-success" href="" id="yesButton">Yes</a>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:replace="fragments :: pagination('/categories', 'top-level categories')"></div>
 	
 
 		<div th:replace="fragments :: footer"></div>
 	</div>
-	
 	<script type="text/javascript">
+		moduleUrl = "[[@{categories}]]";
+
+		$(document).ready(function () {
+			$(".link-delete").on("click", function (e) {
+				e.preventDefault();
+				showDeleteConfirmModel($(this), 'category');
+			});
+		});
+
+		function showDeleteConfirmModel(link, entityName) {
+			entityId = link.attr("entityId")
+
+			$("#yesButton").attr("href", link.attr("href"));
+			$("#confirmText").text("Are you sure want to delete this " + entityName + " Id" + entityId + "?");
+
+			$("#confirmModel").modal();
+		}
 
 
-</script>
+
+
+	</script>
 
 </body>
 

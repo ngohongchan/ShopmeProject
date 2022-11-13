@@ -22,10 +22,41 @@
 						
 		<span th:if="${sortField == fieldName}" th:class="${sortDir == 'asc' ? 'fa fa-sort-asc' : 'fa fa-sort-desc'}" aria-hidden="true"></span>
 	</th>
+
+	<div th:fragment="pagination(moduleURL, entityName)" th:remove="tag">
+		<div class="text-center m-1" th:if="${totalItems > 0}">
+			<span>Showing [[${entityName}]] # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
+		</div>
+
+		<div class="text-center m-1" th:if="${totalItems == 0}">
+			<span>Not [[${entityName}]] Found</span>
+		</div>
+
+		<nav th:if="${totalPages > 1}" aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+					<a th:replace="fragments :: page_link(${moduleURL}, 1, 'First')" />
+				</li>
+				<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+					<a th:replace="fragments :: page_link(${moduleURL}, ${currentPage - 1}, 'Previous')" />
+				</li>
+				<li th:class="${currentPage != i ? 'page-item' : 'page-item active'}" th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<a th:replace="fragments :: page_link(${moduleURL}, ${i}, ${i})" />
+				</li>
+
+				<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+					<a th:replace="fragments :: page_link(${moduleURL}, ${currentPage + 1}, 'Next')" />
+				</li>
+				<li class="page-item">
+					<a th:replace="fragments :: page_link(${moduleURL}, ${totalPages}, 'Last')" />
+				</li>
+			</ul>
+		</nav>
+	</div>
 	
-	<a th:fragment="page_link(pageNum, label)"
+	<a th:fragment="page_link(moduleURL, pageNum, label)"
 		class="page-link" 
-		th:href="@{'/users/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+		th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
 		[[${label}]]
 	</a>
 </body>

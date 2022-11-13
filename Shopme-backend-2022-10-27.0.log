@@ -246,7 +246,7 @@ java.io.NotSerializableException: com.shopme.common.entity.User
 2022-10-27 11:40:50.520  INFO 4508 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
 2022-10-27 11:40:50.520  INFO 4508 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
 2022-10-27 11:40:50.559  WARN 4508 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2022-10-27 11:40:50.570  WARN 4508 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'categoryService' defined in file [D:\springboot-rest-api\ShopmeProject\ShopmeWebParent\ShopmeBackEnd\target\classes\com\shopme\admin\user\CategoryService.class]: Post-processing of merged bean definition failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [com.shopme.admin.user.CategoryService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@7605f4bf]
+2022-10-27 11:40:50.570  WARN 4508 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'categoryService' defined in file [D:\springboot-rest-api\ShopmeProject\ShopmeWebParent\ShopmeBackEnd\target\classes\com\shopme\admin\user\CategoryService.class]: Post-processing of merged bean definition failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [com.shopme.admin.user.service.CategoryService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@7605f4bf]
 2022-10-27 11:40:50.571  INFO 4508 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2022-10-27 11:40:50.571  INFO 4508 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
 2022-10-27 11:40:50.583  INFO 4508 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
@@ -256,7 +256,7 @@ java.io.NotSerializableException: com.shopme.common.entity.User
 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
 2022-10-27 11:40:50.622 ERROR 4508 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
 
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'categoryService' defined in file [D:\springboot-rest-api\ShopmeProject\ShopmeWebParent\ShopmeBackEnd\target\classes\com\shopme\admin\user\CategoryService.class]: Post-processing of merged bean definition failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [com.shopme.admin.user.CategoryService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@7605f4bf]
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'categoryService' defined in file [D:\springboot-rest-api\ShopmeProject\ShopmeWebParent\ShopmeBackEnd\target\classes\com\shopme\admin\user\CategoryService.class]: Post-processing of merged bean definition failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [com.shopme.admin.user.service.CategoryService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@7605f4bf]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:597) ~[spring-beans-5.3.22.jar:5.3.22]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
 	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
@@ -276,7 +276,7 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:577) ~[na:na]
 	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) ~[spring-boot-devtools-2.7.3.jar:2.7.3]
-Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.shopme.admin.user.CategoryService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@7605f4bf]
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.shopme.admin.user.service.CategoryService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@7605f4bf]
 	at org.springframework.util.ReflectionUtils.getDeclaredFields(ReflectionUtils.java:743) ~[spring-core-5.3.22.jar:5.3.22]
 	at org.springframework.util.ReflectionUtils.doWithLocalFields(ReflectionUtils.java:675) ~[spring-core-5.3.22.jar:5.3.22]
 	at org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor.buildPersistenceMetadata(PersistenceAnnotationBeanPostProcessor.java:407) ~[spring-orm-5.3.22.jar:5.3.22]
@@ -291,7 +291,7 @@ Caused by: java.lang.NoClassDefFoundError: com/shopme/admin/user/CategoryReposit
 	at java.base/java.lang.Class.getDeclaredFields(Class.java:2403) ~[na:na]
 	at org.springframework.util.ReflectionUtils.getDeclaredFields(ReflectionUtils.java:738) ~[spring-core-5.3.22.jar:5.3.22]
 	... 24 common frames omitted
-Caused by: java.lang.ClassNotFoundException: com.shopme.admin.user.CategoryRepository
+Caused by: java.lang.ClassNotFoundException: com.shopme.admin.user.repository.CategoryRepository
 	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641) ~[na:na]
 	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188) ~[na:na]
 	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521) ~[na:na]

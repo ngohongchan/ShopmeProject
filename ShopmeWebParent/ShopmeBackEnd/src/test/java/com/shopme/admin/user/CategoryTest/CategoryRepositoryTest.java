@@ -1,10 +1,11 @@
-package com.shopme.admin.user;
+package com.shopme.admin.user.CategoryTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Set;
 
+import com.shopme.admin.user.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -96,7 +97,7 @@ public class CategoryRepositoryTest {
 	
 	@Test
 	public void testListRootCategories() {
-		List<Category> rootCategory = categoryRepository.findRootCategory(Sort.by("name").ascending());
+		List<Category> rootCategory = categoryRepository.findRootCategories(Sort.by("name").ascending());
 		rootCategory.forEach(category -> System.out.println(category.getName()));
 	}
 
