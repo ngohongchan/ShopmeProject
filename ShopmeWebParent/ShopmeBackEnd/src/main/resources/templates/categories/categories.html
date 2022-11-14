@@ -20,22 +20,7 @@
 			[[${message}]]]
 		</div>
 		
-		<div>
-			<form th:action="@{/categories/page/1}">
-				<div class="input-group">
-					<div class="form-inline m-3">
-						<input type="hidden" name="sortField" id="form1" th:value="${sortField}" />
-						<input type="hidden" name="sortDir" id="form1" th:value="${sortDir}" />
-						
-					    <input type="search" name="keyword" th:value="${keyword}" id="form1" class="form-control" placeholder="Search" />
-					    &nbsp;&nbsp;
-					    <button type="submit" class="btn btn-primary">search</button>
-					    &nbsp;&nbsp;
-					    <button type="button" class="btn btn-secondary" onClick="clearFilter()">Clear</button>
-					  </div>
-				</div>
-			</form>
-		</div>
+		<div th:replace="fragments :: search_form('/categories/page/1')"></div>
 
 		<table class="table table-responsive-xl table-bordered">
 			<thead class="thead-dark">
@@ -125,7 +110,15 @@
 			</div>
 		</div>
 
-		<div th:replace="fragments :: pagination('/categories', 'top-level categories')"></div>
+
+		<div th:if="${keyword != null}" class="text-center">
+			<span>Search result does not show categories in hierarchical form</span>
+			<div th:replace="fragments :: pagination('/categories', 'categories')"></div>
+		</div>
+
+		<th:block th:unless="${keyword != null}">
+			<div th:replace="fragments :: pagination('/categories', 'top-level categories')"></div>
+		</th:block>
 	
 
 		<div th:replace="fragments :: footer"></div>
@@ -149,7 +142,9 @@
 			$("#confirmModel").modal();
 		}
 
-
+		function clearFilter() {
+			window.location = "[[@{/users}]]";
+		}
 
 
 	</script>

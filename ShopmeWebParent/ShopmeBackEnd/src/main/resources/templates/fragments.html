@@ -59,5 +59,22 @@
 		th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
 		[[${label}]]
 	</a>
+
+	<div th:fragment="search_form(moduleURL)">
+		<form th:action="@{${moduleURL}}">
+			<div class="input-group">
+				<div class="form-inline m-3">
+					<input type="hidden" name="sortField" id="form1" th:value="${sortField}" />
+					<input type="hidden" name="sortDir" id="form1" th:value="${sortDir}" />
+
+					<input type="search" name="keyword" th:value="${keyword}" id="form1" class="form-control" placeholder="Search" />
+					&nbsp;&nbsp;
+					<button type="submit" class="btn btn-primary">search</button>
+					&nbsp;&nbsp;
+					<button type="button" class="btn btn-secondary" onClick="clearFilter()">Clear</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </body>
 </html>
