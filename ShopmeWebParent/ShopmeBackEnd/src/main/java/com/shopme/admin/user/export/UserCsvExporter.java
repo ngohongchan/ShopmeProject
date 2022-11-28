@@ -16,7 +16,7 @@ import com.shopme.common.entity.User;
 
 public class UserCsvExporter extends AbstractExporter {
 	public void export(List<User> listUsers, HttpServletResponse response) throws IOException {
-		super.setResponseHeader(listUsers, response, "text/csv", ".csv");
+		super.setResponseHeader(response, "text/csv", ".csv", "users_");
 		
 		ICsvBeanWriter csvBeanWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 		
