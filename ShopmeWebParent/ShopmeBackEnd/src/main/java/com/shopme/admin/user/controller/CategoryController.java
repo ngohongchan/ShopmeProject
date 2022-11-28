@@ -7,6 +7,7 @@ import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.category.CategoryPageInfo;
 import com.shopme.admin.user.exceprion.CategoryNotFoundException;
 import com.shopme.admin.user.service.UserService;
+import com.shopme.admin.user.export.CategoryCsvExporter;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class CategoryController {
@@ -146,6 +149,15 @@ public class CategoryController {
         }
 
         return "redirect:/categories";
+    }
+
+    @GetMapping("/categories/export/csv")
+    public void exportToCsv(HttpServletResponse response) throws IOException {
+        List<Category> lisCategories = categoryService.listCategoriesUsedInForm();
+
+        CategoryCsvExporter exporter = new CategoryCsvExporter();
+
+        exporter.export(lisCategories, response);
     }
 
 }
