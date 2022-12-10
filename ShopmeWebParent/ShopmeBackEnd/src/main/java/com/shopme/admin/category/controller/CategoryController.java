@@ -1,4 +1,4 @@
-package com.shopme.admin.user.controller;
+package com.shopme.admin.category.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.category.CategoryPageInfo;
 import com.shopme.admin.user.exceprion.CategoryNotFoundException;
-import com.shopme.admin.user.service.UserService;
 import com.shopme.admin.user.export.CategoryCsvExporter;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.shopme.admin.user.service.CategoryService;
+import com.shopme.admin.category.service.CategoryService;
 import com.shopme.common.entity.Category;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

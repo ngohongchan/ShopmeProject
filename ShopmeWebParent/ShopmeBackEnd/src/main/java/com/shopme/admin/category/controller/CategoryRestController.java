@@ -1,6 +1,6 @@
-package com.shopme.admin.user.controller;
+package com.shopme.admin.category.controller;
 
-import com.shopme.admin.user.service.CategoryService;
+import com.shopme.admin.category.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PostMapping;

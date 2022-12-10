@@ -15,7 +15,7 @@ public class Brand {
     @Column(nullable = false,length = 45, unique = true)
     private String name;
 
-    @Column(nullable = false,length = 45, unique = true)
+    @Column(nullable = false,length = 45)
     private String logo;
 
     @ManyToMany
@@ -30,6 +30,16 @@ public class Brand {
     public Brand(String name) {
         this.name = name;
         this.logo = "default";
+    }
+
+    public Brand(String name, String logo) {
+        this.name = name;
+        this.logo = logo;
+    }
+
+    public Brand(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -62,5 +72,23 @@ public class Brand {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    @Override
+    public String toString() {
+        return "Brand{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", logo='" + logo + '\'' +
+                ", categories=" + categories +
+                '}';
+    }
+
+    @Transient
+    public String getLogoPath() {
+//        /images/image-thumbnail.png
+        if(this.id == null) return "https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png";
+
+        return "/brand-logos/" + this.id + "/" + this.logo;
     }
 }
