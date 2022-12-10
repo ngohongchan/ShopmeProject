@@ -1,4 +1,4 @@
-package com.shopme.admin.user.service;
+package com.shopme.admin.category.service;
 
 import java.util.*;
 
@@ -6,7 +6,7 @@ import javax.transaction.Transactional;
 
 import com.shopme.admin.category.CategoryPageInfo;
 import com.shopme.admin.user.exceprion.CategoryNotFoundException;
-import com.shopme.admin.user.repository.CategoryRepository;
+import com.shopme.admin.category.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
