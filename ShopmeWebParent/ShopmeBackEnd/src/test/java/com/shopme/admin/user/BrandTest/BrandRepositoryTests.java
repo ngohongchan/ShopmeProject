@@ -70,7 +70,7 @@ public class BrandRepositoryTests {
 
     @Test
     public void testDeleteBrand() {
-       Integer id = 3;
+       Integer id = 1;
        brandRepository.deleteById(id);
 
         Optional<Brand> result = brandRepository.findById(3);
