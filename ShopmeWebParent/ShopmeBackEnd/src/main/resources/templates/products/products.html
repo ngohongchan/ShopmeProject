@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: page_head('Shopeme Admin Control Panel')"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation :: menu"></div>
+    <div class="mb-2">
+        <h1 class="text-capitalize">Manage Categories</h1>
+        <a th:href="@{/brands/new}">Create New Brands</a>
+        &nbsp; | &nbsp;
+        <a th:href="@{/categories/export/csv}">Export to Csv</a>
+        &nbsp; | &nbsp;
+        <a th:href="@{/categories/export/excel}">Export to Excel</a>
+        &nbsp; | &nbsp;
+        <a th:href="@{/categories/export/pdf}">Export to Pdf</a>
+    </div>
+
+    <div th:if="${message != null}" class="alert alert-success text-center">
+        [[${message}]]]
+    </div>
+
+    <div th:replace="fragments :: search_form('/brands/page/1')"></div>
+
+    <table class="table table-responsive-xl table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                <a class="text-white">
+                    ID
+                </a>
+            </th>
+
+            <th scope="col">
+                <a class="text-white">
+                    Main Image
+                </a>
+            </th>
+
+            <th scope="col">
+                <a class="text-white">
+                    Product Name
+                </a>
+            </th>
+
+            <th scope="col">
+                <a class="text-white">
+                   Brand
+                </a>
+            </th>
+            <th scope="col">
+                <a class="text-white">
+                    Category
+                </a>
+            </th>
+            <th scope="col">
+                <a class="text-white">
+                    Enabled
+                </a>
+            </th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${listProducts}">
+            <td>[[${product.id}]]</td>
+            <td>
+                <div class ="text-center">
+                    <span>default</span>
+
+<!--                    <img th:if="${brand.logo != null}" width="70px" th:src="@{${brand.logoPath}}" />-->
+                </div>
+            </td>
+            <td>[[${product.name}]]</td>
+            <td>[[${product.brand.name}]]</td>
+            <td>[[${product.category.name}]]</td>
+            <td>
+                <a class="btn btn-primary text-white">Enabled</a>
+            </td>
+            <td>
+                <a class="btn btn-success text-white">View Detail</a>
+                <a class="btn btn-primary text-white">Edit</a>
+                <a class="btn btn-danger link-delete text-white">Delete</a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="modal" tabindex="-1" role="dialog" id="confirmModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmText"></p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-success" href="" id="yesButton">Yes</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <th:block th:unless="${keyword != null}">
+        <div th:replace="fragments :: pagination('/brands', 'brands')"></div>
+    </th:block>
+
+
+    <div th:replace="fragments :: footer"></div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (e) {
+            e.preventDefault();
+            showDeleteConfirmModel($(this), 'category');
+        });
+    });
+
+    function showDeleteConfirmModel(link, entityName) {
+        entityId = link.attr("entityId")
+
+        $("#yesButton").attr("href", link.attr("href"));
+        $("#confirmText").text("Are you sure want to delete this " + entityName + " Id " + entityId + "?");
+
+        $("#confirmModel").modal();
+    }
+
+    function clearFilter() {
+        window.location = "[[@{/brands}]]";
+    }
+
+
+</script>
+
+</body>
+
+</html>
